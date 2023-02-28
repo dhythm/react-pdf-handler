@@ -1,0 +1,27 @@
+env:
+  browser: true
+  es2021: true
+extends:
+  - plugin:react/recommended
+  - standard-with-typescript
+  - prettier
+overrides: []
+parserOptions:
+  project: "./tsconfig.json"
+plugins:
+  - react
+  - import
+  - unused-imports
+rules:
+  "react/jsx-uses-react": off
+  "react/react-in-jsx-scope": off
+  "@typescript-eslint/explicit-function-return-type": off
+  "@typescript-eslint/no-unused-vars": off
+  "@typescript-eslint/consistent-type-imports": off
+  "@typescript-eslint/consistent-type-assertions": off
+  "import/order":
+    - warn
+    - alphabetize:
+        caseInsensitive: true
+        order: asc
+  "unused-imports/no-unused-imports": error
