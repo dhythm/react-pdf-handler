@@ -1,11 +1,16 @@
-import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
-import { PDFViewer } from "@react-pdf/renderer";
+import { PDFViewer, usePDF } from "@react-pdf/renderer";
+import PDFMerger from "pdf-merger-js/browser";
+import { useState } from "react";
 import { SimpleDocument } from "./SimpleDocument";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [mergedPdfUrl, setMergedPdfUrl] = useState<string | null>();
+  const [instance1] = usePDF({ document: <SimpleDocument text="foo" /> });
+  const [instance2] = usePDF({ document: <SimpleDocument text="bar" /> });
+
+  if (instance1.loading || instance2.loading) return <div>Loading...</div>;
 
   return (
     <div className="App">
@@ -20,21 +25,28 @@ function App() {
       <h1>Vite + React</h1>
       <div className="card">
         <button
-          onClick={() => {
-            setCount((count) => count + 1);
+          onClick={async () => {
+            const merger = new PDFMerger();
+
+            if ((instance1.blob == null) || (instance2.blob == null)) {
+              console.log("");
+              return;
+            }
+            await merger.add(instance1.blob);
+            await merger.add(instance2.blob);
+
+            const mergedPdf = await merger.saveAsBlob();
+            const url = URL.createObjectURL(mergedPdf);
+
+            setMergedPdfUrl(url);
           }}
         >
-          count is {count}
+          Save PDF
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <p>{mergedPdfUrl}</p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
       <PDFViewer>
-        <SimpleDocument />
+        <SimpleDocument text="text" />
       </PDFViewer>
     </div>
   );
