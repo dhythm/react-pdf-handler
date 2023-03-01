@@ -28,8 +28,8 @@ function App() {
           onClick={async () => {
             const merger = new PDFMerger();
 
-            if ((instance1.blob == null) || (instance2.blob == null)) {
-              console.log("");
+            if (instance1.blob == null || instance2.blob == null) {
+              console.log("blob is null.");
               return;
             }
             await merger.add(instance1.blob);
