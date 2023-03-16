@@ -16,9 +16,9 @@ const HEADER_ROW_COUNT_MD = 1;
 const DATA_PER_PAGE_MD = 20;
 const ROW_HEIGHT_MD = PAGE_HEIGHT / DATA_PER_PAGE_MD;
 
-const HEADER_ROW_COUNT_LG = 5;
+const HEADER_ROW_COUNT_LG = 4; // 5;
 const DATA_PER_PAGE_LG = 15;
-const HEADER_HEIGHT_LG = 150;
+const HEADER_HEIGHT_LG = 120; // 150;
 const ROW_HEIGHT_LG = PAGE_HEIGHT / DATA_PER_PAGE_LG;
 
 const LONG_JP_TEXT =
@@ -76,14 +76,14 @@ export const SamplePdf = ({ data }: Props) => {
                       data={[
                         "氏名又は名称",
                         "住所",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
+                        "社債金額（円）",
+                        "取得日",
+                        "募集社債と引換えにする金銭の払込みに代えて金銭以外の財産の給付があったときはその財産の価額及び給付の日",
+                        "社債権者が募集社債と引換えにする金銭の払込みをする債務と会社に対する債権とを相殺したときはその債権の額及び相殺をした日",
+                        "質権者の氏名又は名称",
+                        "質権者の住所",
+                        "質権の目的である社債",
+                        "備考",
                       ]}
                       type="tableRow"
                       colWidth={[4, 6, 2, 2, 2, 2, 2, 2, 2, 1]}
@@ -133,7 +133,13 @@ export const SamplePdf = ({ data }: Props) => {
                       </PdfText>
                     </PdfView>
                     <PdfRow
-                      data={["氏名又は名称", "住所", "", "", ""]}
+                      data={[
+                        "氏名又は名称",
+                        "住所",
+                        "保有数量（口）",
+                        "保有金額（円）",
+                        "取得日",
+                      ]}
                       type="tableRow"
                       colWidth={[3, 3, 1, 1, 1]}
                       bold
