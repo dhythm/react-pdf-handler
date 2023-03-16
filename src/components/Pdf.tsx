@@ -1,5 +1,6 @@
 import {
   Document as ReactPdfDocument,
+  Font,
   Page as ReactPdfPage,
   Text as ReactPdfText,
   View as ReactPdfView,
@@ -7,6 +8,27 @@ import {
 import { Style as ReactPdfStyle } from "@react-pdf/types";
 import sum from "lodash/sum";
 import React, { ComponentProps, FC, PropsWithChildren } from "react";
+
+Font.register({
+  family: "Nasu-Regular",
+  src: "src/assets/fonts/Nasu-Regular.ttf",
+});
+Font.register({
+  family: "Nasu-Bold",
+  src: "src/assets/fonts/Nasu-Bold.ttf",
+});
+
+// to avoid hyphenation. ref: https://github.com/diegomura/react-pdf/issues/692#issuecomment-626580841
+Font.registerHyphenationCallback((word: string) => {
+  if (word.length === 1) {
+    return [word];
+  }
+
+  return Array.from(word).reduce<string[]>((arr, char) => {
+    arr.push(char, "");
+    return arr;
+  }, []);
+});
 
 export const PdfDocument: FC<
   PropsWithChildren<ComponentProps<typeof ReactPdfDocument>>
@@ -23,7 +45,7 @@ export const PdfPage: FC<
     size="A4"
     orientation="landscape"
     {...props}
-    style={{ backgroundColor: "#FFF", padding: 20 }}
+    style={{ backgroundColor: "#FFF", fontFamily: "Nasu-Regular", padding: 20 }}
   >
     {children}
   </ReactPdfPage>
@@ -103,7 +125,7 @@ export const PdfText: FC<
   <ReactPdfText
     style={{
       fontSize: size,
-      ...(bold ? { fontWeight: "bold" } : null),
+      ...(bold ? { fontFamily: "Nasu-Bold" } : null),
       color: fontColor,
     }}
   >

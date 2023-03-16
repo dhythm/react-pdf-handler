@@ -10,17 +10,19 @@ import {
 } from "./components/Pdf";
 
 // 20 is padding of page
-const pageHeight = 595.28 - 20 * 2;
+const PAGE_HEIGHT = 595.28 - 20 * 2;
 
-const headerRowHeight = 16;
+const HEADER_ROW_COUNT_MD = 1;
+const DATA_PER_PAGE_MD = 20;
+const ROW_HEIGHT_MD = PAGE_HEIGHT / DATA_PER_PAGE_MD;
 
-// const dataPerPageMd = 15;
-const dataPerPageMd = 20;
-const rowHeightMd = pageHeight / dataPerPageMd;
+const HEADER_ROW_COUNT_LG = 5;
+const DATA_PER_PAGE_LG = 15;
+const HEADER_HEIGHT_LG = 150;
+const ROW_HEIGHT_LG = PAGE_HEIGHT / DATA_PER_PAGE_LG;
 
-// const dataPerPageLg = 11;
-const dataPerPageLg = 15;
-const rowHeightLg = pageHeight / dataPerPageLg;
+const LONG_JP_TEXT =
+  "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ";
 
 interface Props {
   data: string[];
@@ -39,7 +41,7 @@ export const SamplePdf = ({ data }: Props) => {
         </PdfView>
       </PdfPage>
       <PdfPage wrap={false}>
-        <PdfView height={pageHeight}>
+        <PdfView height={PAGE_HEIGHT}>
           <PdfText>wrap prop is false, View has height</PdfText>
         </PdfView>
       </PdfPage>
@@ -49,17 +51,19 @@ export const SamplePdf = ({ data }: Props) => {
         </PdfView>
       </PdfPage>
       {splitByPages(data, {
-        dataPerPage: dataPerPageLg,
+        dataPerPage: DATA_PER_PAGE_LG,
         headerRowCount: 4,
       }).map((rows, pageCount) => {
         return (
           <PdfPage key={pageCount} wrap={false}>
-            <PdfView height={pageHeight}>
+            <PdfView height={PAGE_HEIGHT}>
               <PdfTable noBottomBorder>
                 {pageCount === 0 && (
                   <>
                     <PdfView
-                      height={headerRowHeight}
+                      height={
+                        ROW_HEIGHT_LG * HEADER_ROW_COUNT_LG - HEADER_HEIGHT_LG
+                      }
                       marginY={-1}
                       borderBottom="1 solid black"
                     >
@@ -68,8 +72,19 @@ export const SamplePdf = ({ data }: Props) => {
                       </PdfText>
                     </PdfView>
                     <PdfRow
-                      height={rowHeightLg * 4 - headerRowHeight}
-                      data={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
+                      height={HEADER_HEIGHT_LG}
+                      data={[
+                        "氏名又は名称",
+                        "住所",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                      ]}
                       type="tableRow"
                       colWidth={[4, 6, 2, 2, 2, 2, 2, 2, 2, 1]}
                       bold
@@ -79,11 +94,22 @@ export const SamplePdf = ({ data }: Props) => {
                 {rows.map((row, rowCount) => (
                   <PdfRow
                     key={rowCount}
-                    data={[`${row}`, "", "", "", "", "", "", "", "", ""]}
+                    data={[
+                      LONG_JP_TEXT,
+                      LONG_JP_TEXT,
+                      `${row}`,
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                      "",
+                    ]}
                     type="tableRow"
                     colWidth={[4, 6, 2, 2, 2, 2, 2, 2, 2, 1]}
                     alignItems={{ 2: "flex-end" }}
-                    height={rowHeightLg}
+                    height={ROW_HEIGHT_LG}
                   />
                 ))}
               </PdfTable>
@@ -92,27 +118,22 @@ export const SamplePdf = ({ data }: Props) => {
         );
       })}
       {splitByPages(data, {
-        dataPerPage: dataPerPageMd,
-        headerRowCount: 1,
+        dataPerPage: DATA_PER_PAGE_MD,
+        headerRowCount: HEADER_ROW_COUNT_MD,
       }).map((rows, pageCount) => {
         return (
           <PdfPage key={pageCount} wrap={false}>
-            <PdfView height={pageHeight}>
+            <PdfView height={PAGE_HEIGHT}>
               <PdfTable noBottomBorder>
                 {pageCount === 0 && (
                   <>
-                    <PdfView
-                      height={headerRowHeight}
-                      marginY={-1}
-                      borderBottom="1 solid black"
-                    >
+                    <PdfView borderBottom="1 solid black">
                       <PdfText size={12} bold>
-                        Header has height
+                        明細
                       </PdfText>
                     </PdfView>
                     <PdfRow
-                      height={rowHeightMd - headerRowHeight}
-                      data={["1", "2", "3", "4", "5"]}
+                      data={["氏名又は名称", "住所", "", "", ""]}
                       type="tableRow"
                       colWidth={[3, 3, 1, 1, 1]}
                       bold
@@ -122,11 +143,11 @@ export const SamplePdf = ({ data }: Props) => {
                 {rows.map((row, rowCount) => (
                   <PdfRow
                     key={rowCount}
-                    data={[`${row}`, "", "", "", ""]}
+                    data={[LONG_JP_TEXT, LONG_JP_TEXT, `${row}`, "", ""]}
                     type="tableRow"
                     colWidth={[3, 3, 1, 1, 1]}
                     alignItems={{ 2: "flex-end" }}
-                    height={rowHeightMd}
+                    height={ROW_HEIGHT_MD}
                   />
                 ))}
               </PdfTable>
