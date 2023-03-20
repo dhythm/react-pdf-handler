@@ -21,10 +21,10 @@ const DATA_PER_PAGE_LG = 15;
 const HEADER_HEIGHT_LG = 120;
 const ROW_HEIGHT_LG = PAGE_HEIGHT / DATA_PER_PAGE_LG;
 
+const SHORT_JP_TEXT = "テスト公太郎";
 const LONG_JP_TEXT =
-  "あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。"
+  "あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。";
 //  "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポ";
-
 
 interface Props {
   data: string[];
@@ -97,7 +97,7 @@ export const SamplePdf = ({ data }: Props) => {
                   <PdfRow
                     key={rowCount}
                     data={[
-                      LONG_JP_TEXT,
+                      SHORT_JP_TEXT,
                       LONG_JP_TEXT,
                       `${row}`,
                       "2023/03/03",
@@ -151,7 +151,13 @@ export const SamplePdf = ({ data }: Props) => {
                 {rows.map((row, rowCount) => (
                   <PdfRow
                     key={rowCount}
-                    data={[LONG_JP_TEXT, LONG_JP_TEXT, `${row}`, "10,000", "2023/03/03"]}
+                    data={[
+                      SHORT_JP_TEXT,
+                      LONG_JP_TEXT,
+                      `${row}`,
+                      "10,000",
+                      "2023/03/03",
+                    ]}
                     type="tableRow"
                     colWidth={[3, 3, 1, 1, 1]}
                     alignItems={{ 2: "flex-end" }}
