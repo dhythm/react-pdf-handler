@@ -4,13 +4,16 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "server:mergePdf": "ts-node --project tsconfig.server.json server/mergePdf.ts",
-    "server:createPdf": "ts-node --project tsconfig.server.json server/createPdf.ts",
+    "server:mergePdf:dev": "ts-node --project tsconfig.server.json server/mergePdf.ts",
+    "server:mergePdf:prod": "tsc --project tsconfig.server.json  && node dist/server/mergePdf.js",
+    "server:createPdf:dev": "ts-node --project tsconfig.server.json server/createPdf.ts",
+    "server:createPdf:prod": "tsc --project tsconfig.server.json  && node dist/server/createPdf.js",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@react-pdf/renderer": "^3.1.6",
+    "commander": "^10.0.0",
     "lodash": "^4.17.21",
     "pdf-merger-js": "^4.2.0",
     "react": "^18.2.0",

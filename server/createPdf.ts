@@ -1,13 +1,20 @@
 import { memoryUsage } from "node:process";
 import ReactPDF, { renderToFile } from "@react-pdf/renderer";
 import { SamplePdf } from "../src/SamplePdf";
+import { Command } from "commander";
 
-const VOLUME = 1000;
+const VOLUME = 10_000;
+
+const program = new Command();
+program.parse(process.argv);
+const COUNT_ROWS = Number(program.args[0] ?? VOLUME);
 
 const main = async () => {
   const fileName = `${__dirname}/sample.pdf`;
   await renderToFile(
-    SamplePdf({ data: [...Array(VOLUME)].map((_, idx) => `${idx + 1}`) }),
+    SamplePdf({
+      data: [...Array(COUNT_ROWS)].map((_, idx) => `${idx + 1}`),
+    }),
     fileName
   );
   console.log("It works!");
@@ -18,5 +25,5 @@ const main = async () => {
   await main();
   const end = process.hrtime(start);
   console.log(memoryUsage());
-  console.log({ rows: VOLUME, start, end });
+  console.log({ rows: COUNT_ROWS, start, end });
 })();
