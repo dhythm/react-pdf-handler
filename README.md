@@ -18,3 +18,11 @@ npm install --save-dev eslint-plugin-import eslint-plugin-unused-imports
 ```
 
 ## Getting started
+
+```sh
+npm install
+```
+
+## Other
+
+https://github.com/diegomura/react-pdf/issues/314
