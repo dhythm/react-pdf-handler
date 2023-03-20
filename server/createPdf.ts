@@ -3,6 +3,7 @@ import ReactPDF, { renderToFile, renderToStream } from "@react-pdf/renderer";
 import { SamplePdf } from "../src/SamplePdf";
 import { Command } from "commander";
 import { Base64Encode } from "base64-stream";
+import memwatch from "@airbnb/node-memwatch";
 
 const VOLUME = 10_000;
 
@@ -11,22 +12,15 @@ program.option("-s, --stream", "use stream").parse(process.argv);
 const options = program.opts();
 const COUNT_ROWS = Number(program.args[0] ?? VOLUME);
 
+const data = [...Array(COUNT_ROWS)].map((_, idx) => `${idx + 1}`);
+
 const toFile = async () => {
   const fileName = `${__dirname}/sample.pdf`;
-  await renderToFile(
-    SamplePdf({
-      data: [...Array(COUNT_ROWS)].map((_, idx) => `${idx + 1}`),
-    }),
-    fileName
-  );
+  await renderToFile(SamplePdf({ data }), fileName);
 };
 
 const toStream = async () => {
-  const stream = await renderToStream(
-    SamplePdf({
-      data: [...Array(COUNT_ROWS)].map((_, idx) => `${idx + 1}`),
-    })
-  );
+  const stream = await renderToStream(SamplePdf({ data }));
   const promise = () => {
     let data = "";
     return new Promise((resolve, reject) => {
@@ -64,5 +58,5 @@ const toStream = async () => {
       )
       .join(", ")
   );
-  console.log({ rows: COUNT_ROWS, start, end });
+  console.log({ rows: COUNT_ROWS, time: `${end[0]}.${end[1]} sec` });
 })();
